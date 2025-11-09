@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Академическое исследование роли социальных сетей в формировании информационного общества">
+    <meta name="author" content="Лутошкина Валерия Васильевна">
+    <title>{% block title %}Роль социальных сетей в формировании информационного общества{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <!-- Шапка сайта -->
+        <header class="header">
+            <div class="header-content">
+                <div class="breadcrumbs">
+                    {% block breadcrumbs %}
+                    <a href="{{ url_for('index') }}">Главная</a>
+                    {% endblock %}
+                </div>
+                <div class="additional-nav">
+                    <a href="{{ url_for('index') }}#author">Об авторе</a>
+                    <a href="{{ url_for('index') }}#contacts">Контакты</a>
+                    <button class="theme-toggle" aria-label="Переключить тему">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Левое навигационное меню -->
+        <nav class="main-menu" aria-label="Основная навигация">
+            <div class="menu-header">
+                <h2>Навигация</h2>
+                <button class="menu-toggle" aria-label="Свернуть меню" aria-expanded="true">
+                    <span class="toggle-icon">←</span>
+                </button>
+            </div>
+            <ul>
+                <li><a href="{{ url_for('index') }}" 
+                       {% if request.endpoint == 'index' %}class="active" aria-current="page"{% endif %}
+                       title="Главная страница">
+                       <span class="nav-icon">🏠</span>
+                       <span class="nav-text">Главная страница</span>
+                </a></li>
+                <li><a href="{{ url_for('concept') }}" 
+                       {% if request.endpoint == 'concept' %}class="active" aria-current="page"{% endif %}
+                       title="Информационное общество">
+                       <span class="nav-icon">🌐</span>
+                       <span class="nav-text">Информационное общество</span>
+                </a></li>
+                <li><a href="{{ url_for('structure') }}" 
+                       {% if request.endpoint == 'structure' %}class="active" aria-current="page"{% endif %}
+                       title="Структура социальных сетей">
+                       <span class="nav-icon">🕸️</span>
+                       <span class="nav-text">Структура социальных сетей</span>
+                </a></li>
+                <li><a href="{{ url_for('functions') }}" 
+                       {% if request.endpoint == 'functions' %}class="active" aria-current="page"{% endif %}
+                       title="Функции социальных сетей">
+                       <span class="nav-icon">⚡</span>
+                       <span class="nav-text">Функции социальных сетей</span>
+                </a></li>
+                <li><a href="{{ url_for('trends') }}" 
+                       {% if request.endpoint == 'trends' %}class="active" aria-current="page"{% endif %}
+                       title="Тренды развития">
+                       <span class="nav-icon">📈</span>
+                       <span class="nav-text">Тренды развития</span>
+                </a></li>
+                <li><a href="{{ url_for('problems') }}" 
+                       {% if request.endpoint == 'problems' %}class="active" aria-current="page"{% endif %}
+                       title="Проблемы и риски">
+                       <span class="nav-icon">⚠️</span>
+                       <span class="nav-text">Проблемы и риски</span>
+                </a></li>
+                <li><a href="{{ url_for('sources') }}" 
+                       {% if request.endpoint == 'sources' %}class="active" aria-current="page"{% endif %}
+                       title="Использованные источники">
+                       <span class="nav-icon">🔍</span>
+                       <span class="nav-text">Использованные источники</span>
+                </a></li>
+            </ul>
+        </nav>
+
+        <!-- Основной контент -->
+        <main class="content" id="main-content">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for message in messages %}
+                            <div class="flash-message">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            
+            {% block content %}{% endblock %}
+            
+            <!-- Кнопка "Наверх" -->
+            <button class="back-to-top" aria-label="Вернуться к началу страницы">
+                ↑ Наверх
+            </button>
+        </main>
+
+        <!-- Правое оглавление -->
+        <aside class="page-toc" aria-label="Оглавление страницы">
+            <div class="toc-header">
+                <h3>Содержание страницы</h3>
+                <button class="toc-toggle" aria-label="Свернуть оглавление" aria-expanded="true">
+                    <span class="toggle-icon">↑</span>
+                </button>
+            </div>
+            <div class="toc-content">
+                {% block toc %}
+                <!-- По умолчанию пустое оглавление -->
+                {% endblock %}
+            </div>
+        </aside>
+
+        <!-- Подвал сайта -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; Лутошкина Валерия Васильевна, 2025</p>
+                <p>Научный руководитель: С.Л. Миньков, ст. науч. сотрудник, доцент</p>
+                <p>НИ ТГУ, группа 122516</p>
+                <div class="footer-links">
+                    <a href="{{ url_for('sources') }}">Источники</a>
+                    <a href="{{ url_for('index') }}#author">Об авторе</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Плавная прокрутка для якорных ссылок
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    e.preventDefault();
+                    const headerHeight = document.querySelector('.header').offsetHeight;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Обновляем URL без перезагрузки страницы
+                    history.pushState(null, null, targetId);
+                }
+            });
+        });
+
+        // Обновление активного состояния в навигации
+        function updateActiveNav() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.page-toc a');
+            const headerHeight = document.querySelector('.header').offsetHeight;
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - headerHeight - 20;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= sectionTop && 
+                    window.pageYOffset < sectionTop + sectionHeight) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSection}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Кнопка "Наверх"
+        const backToTopButton = document.querySelector('.back-to-top');
+        
+        function toggleBackToTop() {
+            if (window.pageYOffset > 300) {
+                backToTopButton.style.display = 'block';
+            } else {
+                backToTopButton.style.display = 'none';
+            }
+        }
+
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Переключение темы
+        const themeToggle = document.querySelector('.theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            const themeIcon = themeToggle.querySelector('.theme-icon');
+            themeIcon.textContent = document.body.classList.contains('dark-theme') ? '☀️' : '🌙';
+            
+            // Сохраняем выбор темы
+            localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+        });
+
+        // Сворачивание/разворачивание меню
+        const menuToggle = document.querySelector('.menu-toggle');
+        const mainMenu = document.querySelector('.main-menu');
+        
+        if (menuToggle && mainMenu) {
+            menuToggle.addEventListener('click', () => {
+                const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+                menuToggle.setAttribute('aria-expanded', !isExpanded);
+                mainMenu.classList.toggle('collapsed');
+                
+                // Обновляем иконку стрелки
+                const toggleIcon = menuToggle.querySelector('.toggle-icon');
+                toggleIcon.textContent = isExpanded ? '→' : '←';
+                
+                // Сохраняем состояние меню
+                localStorage.setItem('menuCollapsed', !isExpanded);
+            });
+        }
+
+        // Сворачивание/разворачивание оглавления
+        const tocToggle = document.querySelector('.toc-toggle');
+        const pageToc = document.querySelector('.page-toc');
+        
+        if (tocToggle && pageToc) {
+            tocToggle.addEventListener('click', () => {
+                const isExpanded = tocToggle.getAttribute('aria-expanded') === 'true';
+                tocToggle.setAttribute('aria-expanded', !isExpanded);
+                pageToc.classList.toggle('collapsed');
+                
+                // Сохраняем состояние оглавления
+                localStorage.setItem('tocCollapsed', !isExpanded);
+            });
+        }
+
+        // Анимация чисел в статистике
+        function animateNumbers() {
+            const numberElements = document.querySelectorAll('.stat-number');
+            
+            numberElements.forEach(element => {
+                const target = parseFloat(element.getAttribute('data-target'));
+                const duration = 2000;
+                const step = target / (duration / 16);
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += step;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    element.textContent = current.toFixed(current % 1 !== 0 ? 1 : 0);
+                }, 16);
+            });
+        }
+
+        // Запуск анимации при попадании в viewport
+        function startAnimationWhenVisible() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateNumbers();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+            
+            const statsSection = document.querySelector('.research-stats');
+            if (statsSection) {
+                observer.observe(statsSection);
+            }
+        }
+
+        // Загрузка сохраненных настроек
+        document.addEventListener('DOMContentLoaded', () => {
+            // Загрузка темы
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                themeToggle.querySelector('.theme-icon').textContent = '☀️';
+            }
+            
+            // Загрузка состояния меню
+            const menuCollapsed = localStorage.getItem('menuCollapsed') === 'true';
+            if (menuCollapsed && mainMenu && menuToggle) {
+                menuToggle.setAttribute('aria-expanded', 'false');
+                mainMenu.classList.add('collapsed');
+                const toggleIcon = menuToggle.querySelector('.toggle-icon');
+                toggleIcon.textContent = '→';
+            }
+            
+            // Загрузка состояния оглавления
+            const tocCollapsed = localStorage.getItem('tocCollapsed') === 'true';
+            if (tocCollapsed && pageToc && tocToggle) {
+                tocToggle.setAttribute('aria-expanded', 'false');
+                pageToc.classList.add('collapsed');
+            }
+            
+            // Инициализация
+            updateActiveNav();
+            toggleBackToTop();
+            startAnimationWhenVisible();
+        });
+
+        // Слушатели событий
+        window.addEventListener('scroll', () => {
+            updateActiveNav();
+            toggleBackToTop();
+        });
+
+        window.addEventListener('resize', updateActiveNav);
+
+        // Улучшенная обработка клавиатуры
+        document.addEventListener('keydown', (e) => {
+            // Tab для навигации
+            if (e.key === 'Tab') {
+                document.body.classList.add('keyboard-navigation');
+            }
+        });
+
+        document.addEventListener('mousedown', () => {
+            document.body.classList.remove('keyboard-navigation');
+        });
+    </script>
+</body>
+</html>
